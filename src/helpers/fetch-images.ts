@@ -1,5 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { pool } from "@/db/client";
+import { existsSync } from "node:fs";
 
 const ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 if (!ACCESS_KEY) {
@@ -34,11 +36,7 @@ interface ManifestEntry {
   filename: string;
   searchTerm: string;
   category: string;
-  unsplashId: string;
   sourceUrl: string;
-  photographer: string;
-  photographerUrl: string;
-  license: string;
 }
 
 async function sleep(ms: number) {
@@ -90,6 +88,14 @@ async function downloadImage(
 }
 
 async function main() {
+  if (existsSync(OUTPUT_DIR)) {
+    const files = await fs.readdir(OUTPUT_DIR);
+    if (files.length > 0) {
+      console.log(`Found ${files.length} existing images, skipping fetch.`);
+      return;
+    }
+  }
+
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
   const manifest: ManifestEntry[] = [];
@@ -115,12 +121,7 @@ async function main() {
         filename,
         searchTerm: term,
         category,
-        unsplashId: photo.id,
         sourceUrl: photo.links.html,
-        photographer: photo.user.name,
-        photographerUrl: photo.user.links.html,
-        license:
-          "Unsplash License (https://unsplash.com/license) — free to use, attribution appreciated",
       });
 
       imageIndex++;
@@ -130,12 +131,21 @@ async function main() {
     }
   }
 
-  await fs.writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
-  console.log(`\nDone. ${manifest.length} images written to ${OUTPUT_DIR}`);
-  console.log(`Manifest: ${MANIFEST_PATH}`);
+  let inserted = 0;
+  for (const entry of manifest) {
+    const relativePath = path.join("data/images", entry.filename);
+    const result = await pool.query(
+      `INSERT INTO images (filename, url, status)
+         VALUES ($1, $2, 'pending')
+         ON CONFLICT (filename) DO NOTHING
+         RETURNING id`,
+      [entry.filename, relativePath],
+    );
+    if (result.rowCount) inserted++;
+  }
+
+  console.log(`\nDone. ${manifest.length} images written to ${OUTPUT_DIR}.`);
+  console.log(`\nDone. ${inserted} entries written to database.`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+export default main;
