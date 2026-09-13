@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS images (
 
   CREATE TABLE IF NOT EXISTS posts (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
+    title TEXT NOT NUas GuaLL,
     body TEXT NOT NULL,
     expected_category TEXT
   );

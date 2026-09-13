@@ -1,7 +1,7 @@
 import { getSimilar, processPost } from "@/controllers/posts.controller";
 import { Router } from "express";
 import validate from "@/middleware/validate";
-import { createPostSchema, postIdParamSchema } from "@/validation/post.schema";
+import { createPostSchema, postIdParamSchema } from "@/models/post.model";
 
 const postRouter = Router();
 
