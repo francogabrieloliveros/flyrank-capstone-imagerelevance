@@ -87,7 +87,7 @@ async function downloadImage(
   }
 }
 
-async function main() {
+async function fetchImages() {
   if (existsSync(OUTPUT_DIR)) {
     const files = await fs.readdir(OUTPUT_DIR);
     if (files.length > 0) {
@@ -148,4 +148,4 @@ async function main() {
   console.log(`\nDone. ${inserted} entries written to database.`);
 }
 
-export default main;
+export default fetchImages;

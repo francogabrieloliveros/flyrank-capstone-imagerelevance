@@ -1,5 +1,5 @@
-import { pool } from "../db/client";
-import { classifyImage } from "../ai/classify";
+import { pool } from "@/db/client";
+import { classifyImage } from "@/ai/classify";
 
 const MAX_ATTEMPTS = 3;
 const CONFIDENCE_FLOOR = 0.6;
@@ -12,7 +12,7 @@ export interface BatchJobSummary {
   failedPermanent: number;
 }
 
-export async function runBatchJob(): Promise<BatchJobSummary> {
+export async function classifyFetched(): Promise<BatchJobSummary> {
   const summary: BatchJobSummary = {
     processed: 0,
     succeeded: 0,
@@ -85,3 +85,5 @@ export async function runBatchJob(): Promise<BatchJobSummary> {
 
   return summary;
 }
+
+export default classifyFetched;
