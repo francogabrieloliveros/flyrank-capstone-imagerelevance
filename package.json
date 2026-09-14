@@ -1,0 +1,39 @@
+{
+  "name": "flyrank-capstone-imagerelevance",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/francogabrieloliveros/flyrank-capstone-imagerelevance#readme",
+  "bugs": {
+    "url": "https://github.com/francogabrieloliveros/flyrank-capstone-imagerelevance/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/francogabrieloliveros/flyrank-capstone-imagerelevance.git"
+  },
+  "license": "MIT",
+  "author": "francogabrieloliveros",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch --env-file=.env index.ts",
+    "seed": "tsx scripts/seed.ts",
+    "test": "tsx scripts/test.ts"
+  },
+  "dependencies": {
+    "@openrouter/ai-sdk-provider": "^3.0.0",
+    "ai": "^7.0.93",
+    "express": "^5.2.1",
+    "pg": "^8.23.0",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^26.5.0",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}
