@@ -2,8 +2,6 @@ import { pool } from "@/db/client";
 import { embedText } from "@/ai/embed";
 
 async function embedFetched() {
-  console.log("Embedding fetched images...");
-
   const { rows: metadatas } = await pool.query(`SELECT * FROM image_metadata`);
   const { rows: existing } = await pool.query(
     `SELECT image_id FROM image_vectors`,
@@ -15,6 +13,12 @@ async function embedFetched() {
   let success = 0;
   let failed = 0;
 
+  // if (metadatas === 0) {
+  //   console.log("No pending images found. Skipping embedding.");
+  //   return summary;
+  // }
+
+  console.log("\nEmbedding fetched images...");
   for (const metadata of metadatas) {
     const description = `${metadata.caption} Notable Details:
     ${metadata.attributes.join(", ")}.`;
@@ -35,17 +39,22 @@ async function embedFetched() {
       );
 
       success++;
-      console.log(`[embedImage] image ${metadata.image_id}: success`);
+      console.log(`   [embedImage] image ${metadata.image_id}: success`);
     } catch (err) {
       failed++;
       console.error(
-        `[embedImage] image ${metadata.image_id} failed:`,
+        `   [embedImage] image ${metadata.image_id} failed:`,
         (err as Error).message,
       );
     }
   }
 
-  console.log(`\nDone. ${success} images embedded. ${failed} failed.`);
+  if (success === 0 && failed === 0) {
+    console.log(`No unembedded image found. Skipped.\n`);
+    return;
+  }
+
+  console.log(`Done. ${success} images embedded. ${failed} failed.\n`);
 }
 
 export default embedFetched;

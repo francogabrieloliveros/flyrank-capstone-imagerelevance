@@ -26,6 +26,13 @@ export async function classifyFetched(): Promise<BatchJobSummary> {
     [MAX_ATTEMPTS],
   );
 
+  if (pending.length === 0) {
+    console.log("No pending images found. Skipping embedding.");
+    return summary;
+  }
+
+  console.log("Classifying fetched images.");
+
   for (const img of pending) {
     summary.processed++;
 
@@ -83,6 +90,9 @@ export async function classifyFetched(): Promise<BatchJobSummary> {
     summary.succeeded++;
   }
 
+  console.log(
+    `Done. ${summary.succeeded} images classfied. ${summary.failedRetryable} failed.`,
+  );
   return summary;
 }
 

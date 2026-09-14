@@ -32,6 +32,14 @@ export const getSimilar = async (req: Request, res: Response) => {
 
     const similar = await rankImagesForPost(numId);
 
+    if (!similar.ranked_images || similar.ranked_images.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No candidate images found.",
+        data: similar,
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: "Fetched similar images to post.",

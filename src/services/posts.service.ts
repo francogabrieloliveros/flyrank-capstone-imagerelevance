@@ -90,6 +90,7 @@ export const rankImagesForPost = async (
     }))
     .sort((a, b) => b.similarity - a.similarity);
   const topMatch = rankedImages[0];
+  if (!topMatch) return {};
 
   const {
     rows: [postData],
@@ -114,6 +115,12 @@ export const rankImagesForPost = async (
       INSERT INTO suggestions (post_id, image_id, similarity, guard_result, reason,
       status)
       VALUES ($1, $2, $3, $4, $5, 'pending')
+      ON CONFLICT (post_id, image_id)
+      DO UPDATE SET
+        similarity   = $3,
+        guard_result = $4,
+        reason       = $5,
+        status       = 'pending'
       RETURNING *
     `,
     [

@@ -49,7 +49,8 @@ const initalizeDatabase = async () => {
     guard_result TEXT NOT NULL,
     reason TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'pending',
-    created_at TIMESTAMPTZ DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE (post_id, image_id)
   );
 
   CREATE INDEX IF NOT EXISTS idx_suggestions_post ON suggestions(post_id);
@@ -66,17 +67,17 @@ const initalizeDatabase = async () => {
   );
 
   CREATE TABLE IF NOT EXISTS eval_set (
-    post_id INT REFERENCES posts(id) ON DELETE CASCADE,
-    correct_image_id INT REFERENCES images(id) ON DELETE CASCADE,
-    PRIMARY KEY (post_id)
+      post_id INT REFERENCES posts(id) ON DELETE CASCADE,
+      expected_category TEXT NOT NULL,
+      UNIQUE (post_id, expected_category)
   );
   `;
 
   try {
     await pool.query(SCHEMA_SQL);
-    console.log("Database initialized successfully.");
+    console.log("\nDatabase initialized successfully.\n");
   } catch (error) {
-    console.error("Failed to initialize database:", error);
+    console.error("\nFailed to initialize database:\n", error);
     process.exit(1);
   }
 };

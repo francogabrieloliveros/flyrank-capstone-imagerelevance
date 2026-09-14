@@ -10,7 +10,6 @@ if (!ACCESS_KEY) {
 }
 
 const OUTPUT_DIR = path.resolve("data/images");
-const MANIFEST_PATH = path.resolve("data/images/manifest.json");
 
 // Search term -> how many images to pull, and the category label these
 // belong to. fox/wolf are deliberately in the same category so the guard
@@ -91,7 +90,7 @@ async function fetchImages() {
   if (existsSync(OUTPUT_DIR)) {
     const files = await fs.readdir(OUTPUT_DIR);
     if (files.length > 0) {
-      console.log(`Found ${files.length} existing images, skipping fetch.`);
+      console.log(`Found ${files.length} existing images, skipping fetch.\n`);
       return;
     }
   }
@@ -145,7 +144,7 @@ async function fetchImages() {
   }
 
   console.log(`\nDone. ${manifest.length} images written to ${OUTPUT_DIR}.`);
-  console.log(`\nDone. ${inserted} entries written to database.`);
+  console.log(`\nDone. ${inserted} entries written to database.\n`);
 }
 
 export default fetchImages;

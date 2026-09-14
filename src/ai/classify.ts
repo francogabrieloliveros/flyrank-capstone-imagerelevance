@@ -3,7 +3,7 @@ import path from "node:path";
 import config from "@/config";
 import { ImageTagSchema, type ImageTag } from "./schema";
 import { logCost } from "@/helpers/cost-log";
-import { generateText, Output, zodSchema } from "ai";
+import { generateText, Output } from "ai";
 import { visionModel } from "./models";
 
 const SYSTEM_PROMPT = `
@@ -81,7 +81,7 @@ export async function classifyImage(
     parsedJson = JSON.parse(raw.replace(/```json|```/g, "").trim());
   } catch {
     console.warn(
-      `[classifyImage] image ${imageId}: response was not valid JSON:`,
+      `   [classifyImage] image ${imageId}: response was not valid JSON:`,
       raw,
     );
     return null;
@@ -90,13 +90,13 @@ export async function classifyImage(
   const result = ImageTagSchema.safeParse(parsedJson);
   if (!result.success) {
     console.warn(
-      `[classifyImage] image ${imageId}: schema validation failed:`,
+      `   [classifyImage] image ${imageId}: schema validation failed:`,
       result.error.issues,
     );
     return null;
   }
 
-  console.log(`[classifyImage] image ${imageId}: success`);
+  console.log(`   [classifyImage] image ${imageId}: success`);
 
   return result.data;
 }

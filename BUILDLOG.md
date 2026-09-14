@@ -33,3 +33,13 @@ I added the suggestion where I can approve or reject suggestions from the posts.
 ## Additional Phase
 
 After pushing the previous phase to github, I reset my Claude code session and deleted the CLAUDE.md file. I want to give the new session a fresh look at the codebase and make it aware of the capstone instructions again. The capstone specs was convuluted for me, especially at this point. I think my code works fine but thats for my standard, not the capstone spec's. Hence, I need a fresh perspective from another source.
+
+From Claude's evaluation, I fixed the mentioned bugs and possible compromises. Also, I changed the eval_set schema at it requires a post_id and an expected_image_id. Since I'm dynamically fetching images from unsplash, there is no guarantee that I and another person will get the same images. Hence, I moved to a much more predicatable evaluation which is post_id and category. With this, I also added a postEvals route where you can add evaluation sets to the database.
+
+I also had to make/adjust the capstone files such as the capstone.yaml, README, BUILOG, DESIGN, and LICENSE. Moreover I had Claude write the seed and tests so I can fill in the EVIDENCE.md
+
+## What I learned
+
+Overall, this capstone was definitely a lot to swallow. I learned a lot of things, one of which is: Never entirely delegate the design and planning to AI. I should've known that from the livestreams and Claude courses; but the overwhelming complexity of the capstone project led me to doing so.
+
+I really liked learning about workflows and embeddings. I did not know LLM's were capable of doing that. This capstone was definitely a roller coaster but I really had fun and leanred a lot.

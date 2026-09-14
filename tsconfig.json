@@ -12,6 +12,9 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
+    "rootDir": "./",
+    "outDir": "./dist",
+
     "strict": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
@@ -20,9 +23,8 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
 
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["./src/*"],
     },
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

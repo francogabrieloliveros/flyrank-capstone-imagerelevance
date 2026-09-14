@@ -1,0 +1,32 @@
+run: docker compose up
+seed: npm run seed
+test: npm run test
+base_url: http://localhost:3000
+endpoints:
+  - method: GET
+    path: /
+    description: Returns api information
+  - method: GET
+    path: /health
+    description: Returns api status
+  - method: POST
+    path: /api/posts/
+    description: Embeds post and adds it to db
+  - method: GET
+    path: /api/posts/:id/images
+    description: Returns ranked image suggestions for a post
+  - method: GET
+    path: /api/suggestions/:id
+    description: Fetch a single suggestion
+  - method: PATCH
+    path: /api/suggestions/:id/approve
+    description: Approve a suggestion
+  - method: PATCH
+    path: /api/suggestions/:id/reject
+    description: Reject a suggestion
+  - method: POST
+    path: /api/eval
+    description: Adds evaluation sets to database
+  - method: GET
+    path: /api/eval
+    description: Returns precision metric against eval_set
